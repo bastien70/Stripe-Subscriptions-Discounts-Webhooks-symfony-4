@@ -1,12 +1,76 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Sheep Shear Club{% endblock %}</title>
+    {% block stylesheets %}
+      <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+      <link href="{{ asset('css/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+      <link href="{{ asset('js/sweetalert/sweetalert.css') }}" rel="stylesheet">
+      <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+      <link href='https://fonts.googleapis.com/css?family=Lobster+Two' rel='stylesheet' type='text/css'>
+    {% endblock %}
+  </head>
+  <body>
+    {% for message in app.flashes('success') %}
+      <div class="sheep-flash alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+      <div class="sheep-flash alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header navbar-left">
+          <a href="{{ path('homepage') }}" class="navbar-brand">
+            SheepShear Club
+          </a>
+        </div>
+        <img src="{{ asset('uploads/sheep-shear-club-logo.png') }}" alt="" class="ssc-logo center-block">
+        <div id="navbar" class="navbar-right">
+          <ul class="nav navbar-nav">
+            {% if is_granted('ROLE_USER') %}
+              <li><a href="{{ path('logout') }}">Logout</a></li>
+            {% else %}
+              <li><a href="{{ path('login') }}">Login</a></li>
+            {% endif %}
+            <li><a href="{{ path('pricing_show') }}">Pricing</a></li>
+            <li><a href="{{ path('order_checkout') }}">
+              <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true">
+              </span> Checkout
+            </a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+    <footer class="footer footer-styling">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <a href="{{ path('homepage') }}" class="footer-link">
+              <p>Sheep Shear Club</p>
+            </a>
+          </div>
+        </div>
+        <div class="social-icons pull-right">
+          <a href="#">
+            <p class="instagram-text">Share your new look with us:</p>
+            <img src="{{ asset('uploads/instagram.png') }}" alt="" class="instagram">
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    {% block javascripts %}
+      <script src="https://code.jquery.com/jquery-3.1.0.js"
+        integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="
+        crossorigin="anonymous">
+      </script>
+
+      <script src="{{ asset('js/sweetalert/sweetalert.min.js') }}"></script>
+    {% endblock %}
+  </body>
 </html>
