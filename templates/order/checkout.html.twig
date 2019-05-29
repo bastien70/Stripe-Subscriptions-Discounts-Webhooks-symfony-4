@@ -23,6 +23,13 @@
                   <td class="col-xs-3">${{ product.price }}</td>
                 </tr>
               {% endfor %}
+
+              {% if cart.subscriptionPlan %}
+                <tr>
+                  <th class="col-xs-6 checkout-product-name">{{ cart.subscriptionPlan.name }}</th>
+                  <td class="col-xs-3">${{ cart.subscriptionPlan.price }} / month</td>
+                </tr>
+              {% endif %}
             </tbody>
             <tfoot>
               <tr>
