@@ -2,6 +2,9 @@
 
 namespace App\Subscription;
 
+use App\Entity\Subscription;
+use App\Entity\User;
+
 class SubscriptionHelper{
   /** @var SubscriptionPlan[] */
   private $plans = [];
@@ -29,6 +32,14 @@ class SubscriptionHelper{
       if ($plan->getPlanId() == $planId) {
         return $plan;
       }
+    }
+  }
+
+  public function addSubscriptionToUser(\Stripe\Subscription $stripeSubscription, User $user){
+    $subscription = $user->getSubscription();
+    if(!$subscription){
+      $subscription = new Subscription();
+      $subscription->setUser($user);
     }
   }
 }
