@@ -108,9 +108,9 @@ class OrderController extends AbstractController {
     $stripeClient = $this->stripeClient;
 
     if (!$user->getStripeCustomerId()) {
-      $stripeClient->createCustomer($user, $token);
+      $stripeCustomer = $stripeClient->createCustomer($user, $token);
     } else {
-      $stripeClient->updateCustomerCard($user, $token);
+      $stripeCustomer = $stripeClient->updateCustomerCard($user, $token);
     }
 
     foreach ($this->cart->getProducts() as $product) {
