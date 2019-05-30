@@ -3,14 +3,17 @@
 {% block body %}
   <div class="nav-space">
     <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <h1>My Account</h1>
-        </div>
-      </div>
 
       <div class="row">
         <div class="col-xs-6">
+          <h1>
+            My Account
+            <form action="{{ path('account_subscription_cancel') }}" method="post" class="pull-right">
+              <button type="submit" class="btn btn-danger btn-xs">
+                Cancel Subscription
+              </button>
+            </form>
+          </h1>
           <table class="table">
             <tbody>
               <tr>

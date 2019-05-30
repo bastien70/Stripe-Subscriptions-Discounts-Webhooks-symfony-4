@@ -60,6 +60,8 @@ class StripeClient {
     return $invoice;
   }
 
+
+
   public function createSubscription(User $user, SubscriptionPlan $plan){
     $subscription = \Stripe\Subscription::create([
       "customer" => $user->getStripeCustomerId(),
@@ -67,5 +69,14 @@ class StripeClient {
     ]);
 
     return $subscription;
+  }
+
+  public function cancelSubscription(User $user){
+    $subscription = \Stripe\Subscription::retrieve(
+      $user->getSubscription()->getStripeSubscriptionId()
+    );
+
+    $subscription->cancel_at_period_end = true;
+    $subscription->save();
   }
 }
