@@ -113,6 +113,8 @@ class OrderController extends AbstractController {
       $stripeCustomer = $stripeClient->updateCustomerCard($user, $token);
     }
 
+    $this->subscriptionHelper->updateCardDetails($user, $stripeCustomer);
+
     foreach ($this->cart->getProducts() as $product) {
       $stripeClient->createInvoiceItem(
         $product->getPrice() * 100,
