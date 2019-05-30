@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="subscription")
  */
-class Subscription {
+class Subscription
+{
   /**
    * @ORM\Id
    * @ORM\GeneratedValue(strategy="AUTO")
@@ -42,44 +43,52 @@ class Subscription {
    */
   private $billingPeriodEndsAt;
 
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
   /**
    * @return User
    */
-  public function getUser() {
+  public function getUser()
+  {
     return $this->user;
   }
 
-  public function setUser(User $user) {
+  public function setUser(User $user)
+  {
     $this->user = $user;
   }
 
-  public function getStripeSubscriptionId() {
+  public function getStripeSubscriptionId()
+  {
     return $this->stripeSubscriptionId;
   }
 
-  public function getStripePlanId() {
+  public function getStripePlanId()
+  {
     return $this->stripePlanId;
   }
 
   /**
    * @return \DateTime
    */
-  public function getEndsAt() {
+  public function getEndsAt()
+  {
     return $this->endsAt;
   }
 
-  public function setEndsAt(\DateTime $endsAt = null) {
+  public function setEndsAt(\DateTime $endsAt = null)
+  {
     $this->endsAt = $endsAt;
   }
 
   /**
    * @return \DateTime
    */
-  public function getBillingPeriodEndsAt() {
+  public function getBillingPeriodEndsAt()
+  {
     return $this->billingPeriodEndsAt;
   }
 
@@ -87,16 +96,27 @@ class Subscription {
     $stripePlanId,
     $stripeSubscriptionId,
     \DateTime $periodEnd
-  ){
+  )
+  {
     $this->stripePlanId = $stripePlanId;
     $this->stripeSubscriptionId = $stripeSubscriptionId;
     $this->billingPeriodEndsAt = $periodEnd;
     $this->endsAt = null;
   }
 
-  public function deactivateSubscription(){
+  public function deactivateSubscription()
+  {
     // paid through the end of the period
     $this->endsAt = $this->billingPeriodEndsAt;
     $this->billingPeriodEndsAt = null;
   }
+
+  public function isActive(){
+    return $this->endsAt === null || $this->endsAt > new \DateTime();
+  }
+
+  public function isCanceled(){
+    return $this->endsAt !== null;
+  }
 }
+

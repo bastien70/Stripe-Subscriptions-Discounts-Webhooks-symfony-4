@@ -169,4 +169,7 @@ class User implements UserInterface {
     $this->cardBrand = $cardBrand;
   }
 
+  public function hasActiveSubscription(){
+    return $this->getSubscription() && $this->getSubscription()->isActive();
+  }
 }
