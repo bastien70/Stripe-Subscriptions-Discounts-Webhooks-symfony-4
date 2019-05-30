@@ -26,7 +26,11 @@
               <tr>
                 <th>Next Billing at:</th>
                 <td>
-                  n/a
+                  {% if app.user.subscription %}
+                    {{ app.user.subscription.billingPeriodEndsAt|date('F js') }}
+                  {%  else %}
+                    n/a
+                  {% endif %}
                 </td>
               </tr>
               <tr>
