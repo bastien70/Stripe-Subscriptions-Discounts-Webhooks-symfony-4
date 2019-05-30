@@ -37,12 +37,24 @@ class User implements UserInterface {
    */
   private $password;
 
+  /**
+   * @ORM\OneToOne(targetEntity="Subscription", mappedBy="user")
+   */
+  private $subscription;
+
   public function getId(): ?int {
     return $this->id;
   }
 
   public function getEmail(): ?string {
     return $this->email;
+  }
+
+  /**
+   * @return Subscription
+   */
+  public function getSubscription() {
+    return $this->subscription;
   }
 
   public function setEmail(string $email): self {

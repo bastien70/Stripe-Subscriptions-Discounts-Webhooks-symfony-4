@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="nav-space">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>My Account</h1>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-6">
+          <table class="table">
+            <tbody>
+              <tr>
+                <th>Subscription</th>
+                <td>
+                  {% if app.user.subscription %}
+                    <span class="label label-success">Active</span>
+                  {%  else %}
+                    <span class="label label-default">None</span>
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <th>Next Billing at:</th>
+                <td>
+                  n/a
+                </td>
+              </tr>
+              <tr>
+                <th>Credit Card</th>
+                <td>
+                  None
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-xs-6">
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
