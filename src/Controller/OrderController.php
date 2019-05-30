@@ -122,7 +122,8 @@ class OrderController extends AbstractController {
     }
 
     if($this->cart->getSubscriptionPlan()){
-      $stripeClient->createSubscription($user, $this->cart->getSubscriptionPlan());
+      $stripeSubscription = $stripeClient->createSubscription($user, $this->cart->getSubscriptionPlan());
+      $this->subscriptionHelper->addSubscriptionToUser($stripeSubscription, $user);
     } else {
       $stripeClient->createInvoice($user, true);
     }

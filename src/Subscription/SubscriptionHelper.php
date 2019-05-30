@@ -4,12 +4,17 @@ namespace App\Subscription;
 
 use App\Entity\Subscription;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SubscriptionHelper{
   /** @var SubscriptionPlan[] */
   private $plans = [];
+  /**
+   * @var EntityManagerInterface
+   */
+  private $em;
 
-  public function __construct() {
+  public function __construct(EntityManagerInterface $em) {
     $this->plans[] = new SubscriptionPlan(
       'Farmer_Brent_Monthly',
       'Farmer Brent',
@@ -21,6 +26,7 @@ class SubscriptionHelper{
       'New Zealander',
       199
     );
+    $this->em = $em;
   }
 
   /**
@@ -41,5 +47,13 @@ class SubscriptionHelper{
       $subscription = new Subscription();
       $subscription->setUser($user);
     }
+
+    $subscription->activateSubscription(
+      $stripeSubscription->plan->id,
+      $stripeSubscription->id
+    );
+
+    $this->em->persist($subscription);
+    $this->em->flush($subscription);
   }
 }
