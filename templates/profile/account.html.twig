@@ -40,7 +40,7 @@
               <tr>
                 <th>Next Billing at:</th>
                 <td>
-                  {% if app.user.hasActiveSubscription %}
+                  {% if app.user.hasActiveNonCanceledSubscription %}
                     {{ app.user.subscription.billingPeriodEndsAt|date('F js') }}
                   {%  else %}
                     n/a
@@ -50,7 +50,7 @@
               <tr>
                 <th>Credit Card</th>
                 <td>
-                  {% if app.user.hasActiveSubscription %}
+                  {% if app.user.hasActiveNonCanceledSubscription %}
                     {{ app.user.cardBrand }} ending in {{ app.user.cardLast4 }}
                   {% else %}
                     None

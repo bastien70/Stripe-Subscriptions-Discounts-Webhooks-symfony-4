@@ -172,4 +172,8 @@ class User implements UserInterface {
   public function hasActiveSubscription(){
     return $this->getSubscription() && $this->getSubscription()->isActive();
   }
+
+  public function hasActiveNonCanceledSubscription(){
+    return $this->hasActiveSubscription() && !$this->getSubscription()->isCanceled();
+  }
 }
