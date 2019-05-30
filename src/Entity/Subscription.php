@@ -93,4 +93,10 @@ class Subscription {
     $this->billingPeriodEndsAt = $periodEnd;
     $this->endsAt = null;
   }
+
+  public function deactivateSubscription(){
+    // paid through the end of the period
+    $this->endsAt = $this->billingPeriodEndsAt;
+    $this->billingPeriodEndsAt = null;
+  }
 }
