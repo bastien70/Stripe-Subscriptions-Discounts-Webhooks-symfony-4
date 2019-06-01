@@ -1,5 +1,19 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+  {{ parent }}
+
+  <script>
+    jQuery(document).ready(function () {
+      $('.js-open-credit-card-form').on('click', function (e) {
+        e.preventDefault();
+
+        $('.js-update-card-wrapper').slideToggle();
+      });
+    });
+  </script>
+{% endblock %}
+
 {% block body %}
   <div class="nav-space">
     <div class="container">
@@ -56,6 +70,10 @@
                 <td>
                   {% if app.user.hasActiveNonCanceledSubscription %}
                     {{ app.user.cardBrand }} ending in {{ app.user.cardLast4 }}
+
+                    <button class="btn-xs btn-link btn pull-right js-open-credit-card-form">
+                      Update credit card
+                    </button>
                   {% else %}
                     None
                   {% endif %}
@@ -65,7 +83,10 @@
           </table>
         </div>
         <div class="col-xs-6">
-
+          <div class="js-update-card-wrapper" style="display: none;">
+            <h2>Update Credit Card</h2>
+            {{ include('order/_cardForm.html.twig') }}
+          </div>
         </div>
       </div>
     </div>
