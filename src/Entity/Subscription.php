@@ -111,6 +111,11 @@ class Subscription
     $this->billingPeriodEndsAt = null;
   }
 
+  public function cancel(){
+    $this->endsAt = new \DateTime();
+    $this->billingPeriodEndsAt = null;
+  }
+
   public function isActive(){
     return $this->endsAt === null || $this->endsAt > new \DateTime();
   }

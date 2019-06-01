@@ -51,10 +51,14 @@ class ProfileController extends AbstractController {
   public function cancelSubscriptionAction(){
     $stripeClient = $this->stripeClient;
 
-    $stripeClient->cancelSubscription($this->getUser());
+    $stripeSubscription = $stripeClient->cancelSubscription($this->getUser());
 
     $subscription = $this->getUser()->getSubscription();
-    $subscription->deactivateSubscription();
+    if ($stripeSubscription->status == 'canceled'){
+      $subscription->cancel();
+    } else {
+      $subscription->deactivateSubscription();
+    }
     $this->em->persist($subscription);
     $this->em->flush();
 
