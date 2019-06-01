@@ -58,6 +58,8 @@ class ProfileController extends AbstractController {
    *
    */
   public function reactivateSubscriptionAction(){
+    $stripeClient = $this->stripeClient;
 
+    $stripeClient->reactivateSubscription($this->getUser());
   }
 }

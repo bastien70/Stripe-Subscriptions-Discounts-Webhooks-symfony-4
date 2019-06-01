@@ -79,4 +79,20 @@ class StripeClient {
     $subscription->cancel_at_period_end = true;
     $subscription->save();
   }
+
+  public function reactivateSubscription(User $user){
+    if(!$user->hasActiveSubscription()){
+      throw new \LogicException('Subscriptions can only be reactivated if the subscription has not actually ended');
+    }
+
+    $subscription = \Stripe\Subscription::retrieve(
+      $user->getSubscription()->getStripeSubscriptionId()
+    );
+
+    //triggers the refresh of the subscription
+    $subscription->plan = $user->getSubscription()->getStripePlanId();
+    $subscription->save();
+
+    return $subscription;
+  }
 }
