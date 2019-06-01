@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\StripeClient;
+use App\Subscription\SubscriptionHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,10 +22,19 @@ class ProfileController extends AbstractController {
    * @var EntityManagerInterface
    */
   private $em;
+  /**
+   * @var SubscriptionHelper
+   */
+  private $subscriptionHelper;
 
-  public function  __construct(StripeClient $stripeClient, EntityManagerInterface $em){
+  public function  __construct(
+    StripeClient $stripeClient,
+    EntityManagerInterface $em,
+    SubscriptionHelper $subscriptionHelper
+  ){
     $this->stripeClient = $stripeClient;
     $this->em = $em;
+    $this->subscriptionHelper = $subscriptionHelper;
   }
 
   /**
@@ -60,6 +70,14 @@ class ProfileController extends AbstractController {
   public function reactivateSubscriptionAction(){
     $stripeClient = $this->stripeClient;
 
-    $stripeClient->reactivateSubscription($this->getUser());
+    $stripeSubscription = $stripeClient
+      ->reactivateSubscription($this->getUser());
+
+    $this->subscriptionHelper
+      ->addSubscriptionToUser($stripeSubscription, $this->getUser());
+
+    $this->addFlash('success', 'Welcome Back!');
+
+    return $this->redirectToRoute('profile_account');
   }
 }
