@@ -52,4 +52,12 @@ class ProfileController extends AbstractController {
 
     return $this->redirectToRoute('profile_account');
   }
+
+  /**
+   * @Route("/profile/subscription/reactivate", name="account_subscription_reactivate", methods={"POST"})
+   *
+   */
+  public function reactivateSubscriptionAction(){
+
+  }
 }
