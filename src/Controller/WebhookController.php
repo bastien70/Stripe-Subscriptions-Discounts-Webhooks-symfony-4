@@ -48,8 +48,18 @@ class WebhookController extends AbstractController {
 
 			  $this->subscriptionHelper->fullyCancelSubscription($subscription);
 			  break;
+		  case 'invoice.payment_succeeded':
+			  $stripeSubscriptionId = $stripeEvent->data->object->subscription;
+
+			  if($stripeSubscriptionId){
+				  $subscription = $this->findSubscription($stripeSubscriptionId);
+				  $stripeSubscription = $this->stripeClient->findSubscription($stripeSubscriptionId);
+			  }
+
+			  break;
 		  default:
-			  throw new \Exception('Unexpected webhook from Stripe '. $stripeEvent->type);
+			  // allow this - we'll have Stripe send us everything
+			  // throw new \Exception('Unexpected webhook type form Stripe! '.$stripeEvent->type);
 	  }
 
 	  return new Response('Event handled '. $stripeEvent->type);
