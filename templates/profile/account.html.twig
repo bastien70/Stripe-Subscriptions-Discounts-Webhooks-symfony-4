@@ -50,6 +50,8 @@
                     {% if app.user.subscription.isCanceled %}
                       <span class="label label-warning">Canceled</span>
                     {% else %}
+                      {{ currentPlan.name }}
+
                       <span class="label label-success">Active</span>
                     {% endif %}
                   {%  else %}
