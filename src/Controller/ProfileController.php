@@ -46,20 +46,23 @@ class ProfileController extends AbstractController {
   public function accountAction() {
 	  $currentPlan = null;
 	  $otherPlan = null;
-
+	  $otherDurationPlan = null;
 
 	  if($this->getUser()->hasActiveSubscription()){
 		  $currentPlan = $this->subscriptionHelper
 			  ->findPlan($this->getUser()->getSubscription()->getStripePlanId());
 		  $otherPlan = $this->subscriptionHelper
 			  ->findPlanToChangeTo($currentPlan->getPlanId());
+		  $otherDurationPlan = $this->subscriptionHelper
+			  ->findPlanForOtherDuration($currentPlan->getPlanId());
 	  }
 
     return $this->render('profile/account.html.twig', [
 	    'error' => null,
 	    'stripe_public_key' => $this->getParameter('stripe_public_key'),
 	    'currentPlan' => $currentPlan,
-	    'otherPlan' => $otherPlan
+	    'otherPlan' => $otherPlan,
+	    'otherDurationPlan' => $otherDurationPlan
     ]);
   }
 
@@ -142,7 +145,7 @@ class ProfileController extends AbstractController {
 				$plan
 			);
 
-		
+		dump($stripeInvoice);
 		// contains the pro-rations *plus* the next cycle's amount
 		$total = $stripeInvoice->amount_due;
 

@@ -6,6 +6,7 @@ use App\Entity\Subscription;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
+
 class SubscriptionHelper{
   /** @var SubscriptionPlan[] */
   private $plans = [];
@@ -17,15 +18,32 @@ class SubscriptionHelper{
   public function __construct(EntityManagerInterface $em) {
     $this->plans[] = new SubscriptionPlan(
       'Farmer_Brent_Monthly',
-      'Farmer Brent',
-      99
+      'Farmer Brent Monthly',
+      99,
+	    SubscriptionPlan::DURATION_MONTHLY
     );
 
     $this->plans[] = new SubscriptionPlan(
       'New_Zealander_Monthly',
-      'New Zealander',
-      199
+      'New Zealander Monthly',
+      199,
+	    SubscriptionPlan::DURATION_MONTHLY
     );
+
+	  $this->plans[] = new SubscriptionPlan(
+		  'Farmer_Brent_Yearly',
+		  'Farmer Brent Yearly',
+		  990,
+		  SubscriptionPlan::DURATION_YEARLY
+	  );
+
+	  $this->plans[] = new SubscriptionPlan(
+		  'New_Zealander_Yearly',
+		  'New Zealander Yearly',
+		  1990,
+		  SubscriptionPlan::DURATION_YEARLY
+	  );
+
     $this->em = $em;
   }
 
@@ -50,6 +68,15 @@ class SubscriptionHelper{
 			$newPlanId = 'New_Zealander_Monthly';
 		} else {
 			$newPlanId = 'Farmer_Brent_Monthly';
+		}
+		return $this->findPlan($newPlanId);
+	}
+
+	public function findPlanForOtherDuration($currentPlanId){
+		if (strpos($currentPlanId, 'Monthly') !== false) {
+			$newPlanId = str_replace('Monthly', 'Yearly', $currentPlanId);
+		} else {
+			$newPlanId = str_replace('Yearly', 'Monthly', $currentPlanId);
 		}
 		return $this->findPlan($newPlanId);
 	}
