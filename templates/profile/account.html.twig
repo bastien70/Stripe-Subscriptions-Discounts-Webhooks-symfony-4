@@ -85,7 +85,9 @@
         <div class="col-xs-6">
           <div class="js-update-card-wrapper" style="display: none;">
             <h2>Update Credit Card</h2>
-            {{ include('order/_cardForm.html.twig') }}
+            {{ include('order/_cardForm.html.twig', {
+              'buttonText': 'Update Card'
+            }) }}
           </div>
         </div>
       </div>
