@@ -145,7 +145,7 @@ class ProfileController extends AbstractController {
 				$plan
 			);
 
-		dump($stripeInvoice);
+		//dump($stripeInvoice);
 		// contains the pro-rations *plus* the next cycle's amount
 		$total = $stripeInvoice->amount_due;
 
