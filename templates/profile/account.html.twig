@@ -49,6 +49,13 @@
                 location.reload()
               })
             })
+            .fail(function (jqXHR) {
+              swal({
+                title: 'Plan change failed!',
+                text: jqXHR.responseJSON.message,
+                type: 'error'
+              })
+                    })
           });
         });
       });
