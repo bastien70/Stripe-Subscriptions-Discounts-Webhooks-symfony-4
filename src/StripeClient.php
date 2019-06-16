@@ -133,4 +133,16 @@ class StripeClient {
 			'subscription_plan' => $newPlan->getPlanId()
 		]);
 	}
+
+	public function changePlan(
+		User $user,
+		SubscriptionPlan $newPlan
+	){
+		$stripeSubscription = $this->findSubscription(
+			$user->getSubscription()->getStripeSubscriptionId()
+		);
+		
+		$stripeSubscription->plan = $newPlan->getPlanId();
+		$stripeSubscription->save();
+	}
 }
