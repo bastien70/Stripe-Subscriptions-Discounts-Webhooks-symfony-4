@@ -41,7 +41,9 @@ class ProfileController extends AbstractController {
    * @Route("/profile", name="profile_account")
    */
   public function accountAction() {
-    return $this->render('profile/account.html.twig');
+    return $this->render('profile/account.html.twig', [
+	    'error' => null
+    ]);
   }
 
   /**
