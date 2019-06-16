@@ -145,11 +145,17 @@ class ProfileController extends AbstractController {
 				$plan
 			);
 
-		//dump($stripeInvoice);
-		// contains the pro-rations *plus* the next cycle's amount
+		$currentUserPlan = $this->subscriptionHelper
+			->findPlan($this->getUser()->getSubscription()->getStripePlanId());
+
+		// contains the pro-rations
+		// *plus* - if the duration matches - next cycle's amount
+
 		$total = $stripeInvoice->amount_due;
 
-		$total -= $plan->getPrice()*100;
+		if ($plan->getDuration() == $currentUserPlan->getDuration()) {
+			$total -= $plan->getPrice() * 100;
+		}
 
 		return new JsonResponse(['total' => $total/100]);
 	}
