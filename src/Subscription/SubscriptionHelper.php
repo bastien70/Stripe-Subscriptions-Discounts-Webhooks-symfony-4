@@ -86,6 +86,10 @@ class SubscriptionHelper{
 			'U',
 			$stripeSubscription->current_period_end
 		);
+
+		//send email if is renewal
+		$isRenewal = $newPeriodEnd > $subscription->getBillingPeriodEndsAt();
+		
 		$subscription->setBillingPeriodEndsAt($newPeriodEnd);
 		$this->em->persist($subscription);
 		$this->em->flush($subscription);
