@@ -4,6 +4,15 @@
   {{  parent() }}
 
   {{ include('order/_creditCardFormJavaScript.html.twig') }}
+
+  <script>
+    jQuery(document).ready(function () {
+      $('.js-show-code-form').on('click', function (e) {
+        e.preventDefault();
+        $('.js-code-form').show();
+      })
+    })
+  </script>
 {% endblock %}
 {% block body %}
   <div class="nav-space-checkout">
@@ -42,6 +51,24 @@
               </tr>
             </tfoot>
           </table>
+
+          <button class="btn btn-xs btn-link pull-right js-show-code-form">
+            I have a coupon code
+          </button>
+
+          <div class="js-code-form" style="display: none;">
+            <form action="" method="POST" class="form-inline">
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-terminal"></i>
+                  </span>
+                  <input type="text" name="code" autocomplete="off" class="form-control" placeholder="Coupon Code"/>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+            </form>
+          </div>
         </div>
         <div class="col-xs-12 col-sm-6">
           {{ include('order/_cardForm.html.twig') }}
