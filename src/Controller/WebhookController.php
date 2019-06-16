@@ -32,6 +32,14 @@ class WebhookController extends AbstractController {
     $eventId = $data['id'];
 	  $stripeEvent = $this->stripeClient->findEvent($eventId);
 
-    return new Response('baaa!');
+	  switch ($stripeEvent->type){
+		  case 'customer.subscription.deleted':
+			  //todo fully cancel the user subscription
+			  break;
+		  default:
+			  throw new \Exception('Unexpected webhook from Stripe '. $stripeEvent->type);
+	  }
+	  
+	  return new Response('Event handled '. $stripeEvent->type);
   }
 }
