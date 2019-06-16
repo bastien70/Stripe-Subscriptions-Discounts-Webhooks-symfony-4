@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -92,6 +93,16 @@ class ProfileController extends AbstractController {
 	 * @Route("/profile/card/update", name="account_update_credit_card", methods={"POST"})
 	 *
 	 */
-	public function updateCreditCardAction(){
+	public function updateCreditCardAction(Request $request){
+		$token = $request->request->get('stripeToken');
+		$user = $this->getUser();
+		$stripeCustomer = $this->stripeClient
+			->updateCustomerCard($user, $token);
+
+		$this->subscriptionHelper->updateCardDetails($user, $stripeCustomer);
+
+		$this->addFlash('success', 'Card Updated!');
+		
+		return $this->redirectToRoute('profile_account');
 	}
 }
