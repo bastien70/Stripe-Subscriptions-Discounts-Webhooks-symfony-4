@@ -15,7 +15,15 @@
 
       $('.js-change-plan-button').on('click', function (e) {
         e.preventDefault();
-        swal('Loading Plan Details');
+
+        var previewUrl = $(this).data('preview-url');
+        var planName = $(this).data('plan-name');
+        $.ajax({
+          url: previewUrl
+        })
+        .done(function (data) {
+          swal('Total $'+data.total);
+        });
       });
     });
   </script>
@@ -61,6 +69,9 @@
 
                       <button class="btn btn-xs btn-link pull-right js-change-plan-button"
                         data-plan-name="{{ otherPlan.name }}"
+                        data-preview-url="{{ path('account_preview_plan_change', {
+                          planId: otherPlan.planId
+                        }) }}"
                       >
                         Change to  {{ otherPlan.name }}
                       </button>
