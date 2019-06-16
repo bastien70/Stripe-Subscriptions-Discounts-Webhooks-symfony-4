@@ -123,5 +123,12 @@ class Subscription
   public function isCanceled(){
     return $this->endsAt !== null;
   }
+
+	/**
+	 * @param mixed $billingPeriodEndsAt
+	 */
+	public function setBillingPeriodEndsAt($billingPeriodEndsAt): void{
+		$this->billingPeriodEndsAt = $billingPeriodEndsAt;
+	}
 }
 

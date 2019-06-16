@@ -54,6 +54,10 @@ class WebhookController extends AbstractController {
 			  if($stripeSubscriptionId){
 				  $subscription = $this->findSubscription($stripeSubscriptionId);
 				  $stripeSubscription = $this->stripeClient->findSubscription($stripeSubscriptionId);
+
+				  $this
+					  ->subscriptionHelper
+					  ->handleSubscriptionPaid($subscription, $stripeSubscription);
 			  }
 
 			  break;
