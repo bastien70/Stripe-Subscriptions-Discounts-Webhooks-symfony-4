@@ -122,4 +122,15 @@ class StripeClient {
 	public function findSubscription($stripeSubscriptionId){
 		return \Stripe\Subscription::retrieve($stripeSubscriptionId);
 	}
+
+	public function getUpcomingInvoiceForChangedSubscription(
+		User $user,
+		SubscriptionPlan $newPlan
+	){
+		return \Stripe\Invoice::upcoming([
+			'customer' => $user->getStripeCustomerId(),
+			'subscription' => $user->getSubscription()->getStripeSubscriptionId(),
+			'subscription_plan' => $newPlan->getPlanId()
+		]);
+	}
 }
