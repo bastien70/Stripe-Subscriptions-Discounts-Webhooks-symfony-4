@@ -96,8 +96,17 @@ class ProfileController extends AbstractController {
 	public function updateCreditCardAction(Request $request){
 		$token = $request->request->get('stripeToken');
 		$user = $this->getUser();
-		$stripeCustomer = $this->stripeClient
-			->updateCustomerCard($user, $token);
+
+		try {
+			$stripeCustomer = $this->stripeClient
+				->updateCustomerCard($user, $token);
+		} catch(\Stripe\Error\Card $e){
+			$error = 'There was a problem charging your card ' . $e->getMessage();
+
+			$this->addFlash('error', $error);
+			
+			return $this->redirectToRoute('profile_account');
+		}
 
 		$this->subscriptionHelper->updateCardDetails($user, $stripeCustomer);
 
