@@ -12,6 +12,11 @@
 
         $('.js-update-card-wrapper').slideToggle();
       });
+
+      $('.js-change-plan-button').on('click', function (e) {
+        e.preventDefault();
+        swal('Loading Plan Details');
+      });
     });
   </script>
 {% endblock %}
@@ -53,6 +58,12 @@
                       {{ currentPlan.name }}
 
                       <span class="label label-success">Active</span>
+
+                      <button class="btn btn-xs btn-link pull-right js-change-plan-button"
+                        data-plan-name="{{ otherPlan.name }}"
+                      >
+                        Change to  {{ otherPlan.name }}
+                      </button>
                     {% endif %}
                   {%  else %}
                     <span class="label label-default">None</span>

@@ -41,7 +41,20 @@ class SubscriptionHelper{
     }
   }
 
-  public function addSubscriptionToUser(\Stripe\Subscription $stripeSubscription, User $user){
+	/**
+	 * @param $currentPlanId
+	 * @return SubscriptionPlan|null
+	 */
+	public function findPlanToChangeTo($currentPlanId){
+		if(strpos($currentPlanId, 'Farmer_Brent_Monthly') !== false){
+			$newPlanId = 'New_Zealander_Monthly';
+		} else {
+			$newPlanId = 'Farmer_Brent_Monthly';
+		}
+		return $this->findPlan($newPlanId);
+	}
+
+	public function addSubscriptionToUser(\Stripe\Subscription $stripeSubscription, User $user){
     $subscription = $user->getSubscription();
     if(!$subscription){
       $subscription = new Subscription();

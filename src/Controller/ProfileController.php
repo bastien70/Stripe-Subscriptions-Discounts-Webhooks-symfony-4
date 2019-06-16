@@ -43,15 +43,21 @@ class ProfileController extends AbstractController {
    */
   public function accountAction() {
 	  $currentPlan = null;
+	  $otherPlan = null;
+
+
 	  if($this->getUser()->hasActiveSubscription()){
 		  $currentPlan = $this->subscriptionHelper
 			  ->findPlan($this->getUser()->getSubscription()->getStripePlanId());
+		  $otherPlan = $this->subscriptionHelper
+			  ->findPlanToChangeTo($currentPlan->getPlanId());
 	  }
 
     return $this->render('profile/account.html.twig', [
 	    'error' => null,
 	    'stripe_public_key' => $this->getParameter('stripe_public_key'),
-	    'currentPlan' => $currentPlan
+	    'currentPlan' => $currentPlan,
+	    'otherPlan' => $otherPlan
     ]);
   }
 
