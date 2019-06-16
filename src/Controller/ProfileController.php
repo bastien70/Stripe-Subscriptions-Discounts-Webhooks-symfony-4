@@ -104,7 +104,7 @@ class ProfileController extends AbstractController {
 			$error = 'There was a problem charging your card ' . $e->getMessage();
 
 			$this->addFlash('error', $error);
-			
+
 			return $this->redirectToRoute('profile_account');
 		}
 
