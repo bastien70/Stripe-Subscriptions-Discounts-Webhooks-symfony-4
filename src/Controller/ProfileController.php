@@ -102,7 +102,7 @@ class ProfileController extends AbstractController {
 		$this->subscriptionHelper->updateCardDetails($user, $stripeCustomer);
 
 		$this->addFlash('success', 'Card Updated!');
-		
+
 		return $this->redirectToRoute('profile_account');
 	}
 }
