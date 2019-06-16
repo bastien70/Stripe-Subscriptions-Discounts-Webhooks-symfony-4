@@ -2,8 +2,10 @@
 namespace App\Controller;
 
 
+use App\Entity\StripeEventLog;
 use App\StripeClient;
 use App\Subscription\SubscriptionHelper;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +21,19 @@ class WebhookController extends AbstractController {
 	 * @var SubscriptionHelper
 	 */
 	private $subscriptionHelper;
+	/**
+	 * @var EntityManagerInterface
+	 */
+	private $em;
 
 	public function __construct(
 		StripeClient $stripeClient,
-		SubscriptionHelper $subscriptionHelper
+		SubscriptionHelper $subscriptionHelper,
+		EntityManagerInterface $em
 	){
 		$this->stripeClient = $stripeClient;
 		$this->subscriptionHelper = $subscriptionHelper;
+		$this->em = $em;
 	}
 
 	/**
@@ -39,6 +47,15 @@ class WebhookController extends AbstractController {
     }
 
     $eventId = $data['id'];
+	  $existingLog = $this->em->getRepository('App:StripeEventLog')
+		  ->findOneBy(['stripeEventId' => $eventId]);
+	  if ($existingLog){
+		  return new Response('Event previously handled!');
+	  }
+
+	  $log = new StripeEventLog($eventId);
+	  $this->em->persist($log);
+	  $this->em->flush($log);
 	  $stripeEvent = $this->stripeClient->findEvent($eventId);
 
 	  switch ($stripeEvent->type){
@@ -71,7 +88,7 @@ class WebhookController extends AbstractController {
 					  $user = $subscription->getUser();
 				  }
 			  }
-			  
+
 			  break;
 		  default:
 			  // allow this - we'll have Stripe send us everything
