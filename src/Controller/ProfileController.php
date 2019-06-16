@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -158,5 +159,9 @@ class ProfileController extends AbstractController {
 
 		$stripeSubscription = $this->stripeClient
 			->changePlan($this->getUser(), $plan);
+
+		$this->subscriptionHelper->addSubscriptionToUser($stripeSubscription, $this->getUser());
+
+		return new Response(null, 200);
 	}
 }

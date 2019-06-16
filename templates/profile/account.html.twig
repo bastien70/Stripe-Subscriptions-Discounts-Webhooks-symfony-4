@@ -17,6 +17,7 @@
         e.preventDefault();
 
         var previewUrl = $(this).data('preview-url');
+        var changeUrl = $(this).data('change-url');
         var planName = $(this).data('plan-name');
         $.ajax({
           url: previewUrl
@@ -36,7 +37,18 @@
             closeOnConfirm: false,
             showLoaderOnConfirm: true
           }, function () {
-            // todo - actually change the plan!
+            $.ajax({
+              url: changeUrl,
+              method: 'POST'
+            })
+            .done(function () {
+              swal({
+                title: 'Plan changed!',
+                type: 'success'
+              }, function () {
+                location.reload()
+              })
+            })
           });
         });
       });
@@ -85,6 +97,9 @@
                       <button class="btn btn-xs btn-link pull-right js-change-plan-button"
                         data-plan-name="{{ otherPlan.name }}"
                         data-preview-url="{{ path('account_preview_plan_change', {
+                          planId: otherPlan.planId
+                        }) }}"
+                        data-change-url="{{ path('account_execute_plan_change', {
                           planId: otherPlan.planId
                         }) }}"
                       >
