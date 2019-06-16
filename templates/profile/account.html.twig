@@ -88,7 +88,8 @@
           <div class="js-update-card-wrapper" style="display: none;">
             <h2>Update Credit Card</h2>
             {{ include('order/_cardForm.html.twig', {
-              'buttonText': 'Update Card'
+              'buttonText': 'Update Card',
+              'formAction': path('account_update_credit_card')
             }) }}
           </div>
         </div>
