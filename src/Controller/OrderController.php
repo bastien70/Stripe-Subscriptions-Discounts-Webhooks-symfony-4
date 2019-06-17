@@ -130,4 +130,20 @@ class OrderController extends AbstractController {
       $stripeClient->createInvoice($user, true);
     }
   }
+
+
+	/**
+	 * @Route("/checkout/coupon", name="order_add_coupon", methods={"POST"})
+	 */
+	public function addCouponAction(Request $request){
+		$code = $request->request->get('code');
+		if(!$code){
+			$this->addFlash('error', 'Missing coupon code!');
+			return $this->redirectToRoute('order_checkout');
+		}
+		$stripeCoupon = $this->stripeClient
+			->findCoupon($code);
+		dump($stripeCoupon);die;
+	}
+
 }

@@ -172,4 +172,8 @@ class StripeClient {
 
 		return $stripeSubscription;
 	}
+
+	public function findCoupon($code){
+		return \Stripe\Coupon::retrieve($code);
+	}
 }
