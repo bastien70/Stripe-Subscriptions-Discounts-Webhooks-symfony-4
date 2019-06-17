@@ -106,6 +106,7 @@ class OrderController extends AbstractController {
     /** @var User $user */
     $user = $this->getUser();
     $stripeClient = $this->stripeClient;
+    $cart = $this->cart;
 
     if (!$user->getStripeCustomerId()) {
       $stripeCustomer = $stripeClient->createCustomer($user, $token);
@@ -113,9 +114,15 @@ class OrderController extends AbstractController {
       $stripeCustomer = $stripeClient->updateCustomerCard($user, $token);
     }
 
-    $this->subscriptionHelper->updateCardDetails($user, $stripeCustomer);
 
-    foreach ($this->cart->getProducts() as $product) {
+	  $this->subscriptionHelper->updateCardDetails($user, $stripeCustomer);
+
+	  if ($cart->getCouponCodeValue()){
+		  $stripeCustomer->coupon = $cart->getCouponCode();
+		  $stripeCustomer->save();
+	  }
+
+	  foreach ($this->cart->getProducts() as $product) {
       $stripeClient->createInvoiceItem(
         $product->getPrice() * 100,
         $user,
@@ -148,7 +155,7 @@ class OrderController extends AbstractController {
 			->setCouponCode($code, $stripeCoupon->amount_off/100);
 
 		$this->addFlash('success', 'Coupon applied!');
-		
+
 		return $this->redirectToRoute('order_checkout');
 	}
 
