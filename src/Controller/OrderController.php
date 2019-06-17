@@ -117,8 +117,9 @@ class OrderController extends AbstractController {
 
 	  $this->subscriptionHelper->updateCardDetails($user, $stripeCustomer);
 
-	  if ($cart->getCouponCodeValue()){
+	  if ($cart->getCouponCodeValue()) {
 		  $stripeCustomer->coupon = $cart->getCouponCode();
+
 		  $stripeCustomer->save();
 	  }
 
@@ -154,6 +155,13 @@ class OrderController extends AbstractController {
 				->findCoupon($code);
 		} catch (\Stripe\Error\InvalidRequest $e){
 			$this->addFlash('error', 'Invalid coupon code');
+
+			return $this->redirectToRoute('order_checkout');
+		}
+
+		if (!$stripeCoupon->valid) {
+
+			$this->addFlash('error', 'Coupon expired');
 
 			return $this->redirectToRoute('order_checkout');
 		}
