@@ -57,12 +57,16 @@ class ProfileController extends AbstractController {
 			  ->findPlanForOtherDuration($currentPlan->getPlanId());
 	  }
 
+	  $invoices = $this->stripeClient
+		  ->findPaidInvoices($this->getUser());
+
     return $this->render('profile/account.html.twig', [
 	    'error' => null,
 	    'stripe_public_key' => $this->getParameter('stripe_public_key'),
 	    'currentPlan' => $currentPlan,
 	    'otherPlan' => $otherPlan,
-	    'otherDurationPlan' => $otherDurationPlan
+	    'otherDurationPlan' => $otherDurationPlan,
+	    'invoices' => $invoices
     ]);
   }
 
