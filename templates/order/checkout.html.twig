@@ -79,7 +79,15 @@
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
-          {{ include('order/_cardForm.html.twig') }}
+          {% if cart.totalWithDiscount > 0 %}
+            {{ include('order/_cardForm.html.twig') }}
+          {% else %}
+            <form action="" method="POST">
+              <button class="btn btn-lg btn-danger" type="submit">
+                Checkout for Free
+              </button>
+            </form>
+          {%  endif %}
         </div>
       </div>
     </div>
