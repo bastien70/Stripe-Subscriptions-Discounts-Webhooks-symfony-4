@@ -113,4 +113,15 @@ class ShoppingCart {
 
     $this->session->set(self::CART_PRODUCTS_KEY, $ids);
   }
+
+	public function setCouponCode($code, $value){
+		$this->session->set(
+			self::CART_COUPON_CODE_KEY,
+			$code
+		);
+		$this->session->set(
+			self::CART_COUPON_VALUE_KEY,
+			$value
+		);
+	}
 }
