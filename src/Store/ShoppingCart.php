@@ -97,7 +97,11 @@ class ShoppingCart {
     return $total;
   }
 
-  public function emptyCart(){
+	public function getTotalWithDiscount(){
+		return max($this->getTotal() - $this->getCouponCodeValue(), 0);
+	}
+
+	public function emptyCart(){
     $this->updateProducts([]);
   }
 
@@ -123,5 +127,13 @@ class ShoppingCart {
 			self::CART_COUPON_VALUE_KEY,
 			$value
 		);
+	}
+
+	public function getCouponCode(){
+		return $this->session->get(self::CART_COUPON_CODE_KEY);
+	}
+
+	public function getCouponCodeValue(){
+		return $this->session->get(self::CART_COUPON_VALUE_KEY);
 	}
 }

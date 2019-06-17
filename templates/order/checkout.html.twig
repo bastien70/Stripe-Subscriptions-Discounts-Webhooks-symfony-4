@@ -43,11 +43,19 @@
                   <td class="col-xs-3">${{ cart.subscriptionPlan.price }} / month</td>
                 </tr>
               {% endif %}
+
+              {% if cart.couponCode %}
+                <tr>
+                  <th class="col-xs-6 checkout-product-name">Coupon {{ cart.couponCode }}</th>
+                  <td class="col-xs-3">-${{ cart.couponCodeValue }}</td>
+                </tr>
+              {% endif %}
+
             </tbody>
             <tfoot>
               <tr>
                 <th class="col-xs-6 info">Total</th>
-                <td class="col-xs-3 info checkout-total">${{ cart.total }}</td>
+                <td class="col-xs-3 info checkout-total">${{ cart.totalWithDiscount }}</td>
               </tr>
             </tfoot>
           </table>
