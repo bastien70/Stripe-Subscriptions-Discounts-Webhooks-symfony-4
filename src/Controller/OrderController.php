@@ -103,6 +103,9 @@ class OrderController extends AbstractController {
    * @throws \Stripe\Error\Card
    */
   private function chargeCustomer($token): void{
+  	if(!$token && $this->cart->getTotalWithDiscount() > 0){
+  		throw new \Exception('Somehow the order is non-free, but we have no token!?');
+	  }
     /** @var User $user */
     $user = $this->getUser();
     $stripeClient = $this->stripeClient;
@@ -111,7 +114,11 @@ class OrderController extends AbstractController {
     if (!$user->getStripeCustomerId()) {
       $stripeCustomer = $stripeClient->createCustomer($user, $token);
     } else {
-      $stripeCustomer = $stripeClient->updateCustomerCard($user, $token);
+	    if ($token) {
+		    $stripeCustomer = $stripeClient->updateCustomerCard($user, $token);
+	    } else {
+				$stripeCustomer = $stripeClient->findCustomer($user);
+	    }
     }
 
 
