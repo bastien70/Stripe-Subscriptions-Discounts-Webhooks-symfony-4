@@ -210,4 +210,12 @@ class StripeClient {
 
 		return $invoices;
 	}
+
+	/**
+	 * @param $invoiceId
+	 * @return \Stripe\Invoice
+	 */
+	public function findInvoice($invoiceId){
+		return \Stripe\Invoice::retrieve($invoiceId);
+	}
 }

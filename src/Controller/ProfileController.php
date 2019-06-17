@@ -184,4 +184,17 @@ class ProfileController extends AbstractController {
 
 		return new Response(null, 200);
 	}
+
+	/**
+	 * @Route("/profile/invoices/{invoiceId}", name="account_invoice_show")
+	 */
+	public function showInvoiceAction($invoiceId){
+		$stripeInvoice = $this->stripeClient
+			->findInvoice($invoiceId);
+
+
+		return $this->render('profile/invoice.html.twig', [
+			'invoice' =>$stripeInvoice
+		]);
+	}
 }

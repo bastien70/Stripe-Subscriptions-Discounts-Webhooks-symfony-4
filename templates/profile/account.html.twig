@@ -160,7 +160,9 @@
                 <td>
                   <div class="list-group">
                     {% for invoice in invoices %}
-                      <a href="" class="list-group-item">
+                      <a href="{{ path('account_invoice_show', {
+                        invoiceId: invoice.id
+                      }) }}" class="list-group-item">
                         Date: {{ invoice.date|date('Y-m-d') }}
 
                         <span class="label label-success pull-right">
