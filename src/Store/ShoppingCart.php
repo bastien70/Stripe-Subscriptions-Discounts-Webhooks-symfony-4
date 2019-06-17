@@ -103,6 +103,8 @@ class ShoppingCart {
 
 	public function emptyCart(){
     $this->updateProducts([]);
+		$this->updatePlanId(null);
+		$this->setCouponCode(null, null);
   }
 
   /**
@@ -117,6 +119,10 @@ class ShoppingCart {
 
     $this->session->set(self::CART_PRODUCTS_KEY, $ids);
   }
+
+	private function updatePlanId($planId){
+		$this->session->set(self::CART_PLAN_KEY, $planId);
+	}
 
 	public function setCouponCode($code, $value){
 		$this->session->set(
